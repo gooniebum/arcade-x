@@ -1,6 +1,14 @@
 {
   "games": [
     {
+      "id": "geometry-dash",
+      "title": "Geometry Dash",
+      "description": "Jump and fly your way through danger in this rhythm-based action platformer!",
+      "category": "Action",
+      "thumbnail": "https://static.wikia.nocookie.net/logopedia/images/4/41/Geometry_Dash_Icon.svg",
+      "url": "./geometry-dash.html"
+    },
+    {
       "id": "drive-mad",
       "title": "Drive Mad",
       "description": "Drive Mad is a car game where you drive on a track filled with obstacles. Your goal is to reach the finish line in one piece.",
@@ -9,44 +17,12 @@
       "url": "./drive-mad.html"
     },
     {
-      "id": "2048",
-      "title": "2048",
-      "description": "Join the numbers and get to the 2048 tile!",
-      "category": "Puzzle",
-      "thumbnail": "https://picsum.photos/seed/2048/400/250",
-      "url": "https://play2048.co/"
-    },
-    {
-      "id": "hextris",
-      "title": "Hextris",
-      "description": "A fast-paced puzzle game inspired by Tetris.",
-      "category": "Arcade",
-      "thumbnail": "https://picsum.photos/seed/hextris/400/250",
-      "url": "https://hextris.io/"
-    },
-    {
       "id": "slope",
       "title": "Slope",
-      "description": "Navigate a ball through a 3D isometric course.",
+      "description": "Navigate a ball through a 3D isometric course. This version includes about:blank cloaking.",
       "category": "Action",
-      "thumbnail": "https://picsum.photos/seed/slope/400/250",
-      "url": "https://kdata1.com/2020/05/slope/"
-    },
-    {
-      "id": "doodle-jump",
-      "title": "Doodle Jump",
-      "description": "Jump as high as you can in this classic platformer.",
-      "category": "Platform",
-      "thumbnail": "https://picsum.photos/seed/jump/400/250",
-      "url": "https://doodle-jump.org/"
-    },
-    {
-      "id": "pacman",
-      "title": "Google Pacman",
-      "description": "The classic Google Doodle Pacman game.",
-      "category": "Arcade",
-      "thumbnail": "https://picsum.photos/seed/pacman/400/250",
-      "url": "https://www.google.com/logos/2010/pacman10-i.html"
+      "thumbnail": "https://slope-play.com/cache/data/image/game/slope-logo-1-f309x309.webp",
+      "url": "./slope.html"
     }
   ]
 }
