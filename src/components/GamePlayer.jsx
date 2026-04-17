@@ -35,24 +35,24 @@ export default function GamePlayer({ game, onClose }) {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 bg-black/95 flex flex-col"
     >
-      <div className="flex items-center justify-between p-4 bg-nexus-card border-b border-white/10">
+      <div className="flex items-center justify-between p-4 bg-arc-surface border-b border-white/10">
         <div className="flex items-center gap-4">
           <button
             onClick={onClose}
             className="p-2 hover:bg-white/10 rounded-full transition-colors"
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6 text-white" />
           </button>
           <div>
-            <h2 className="font-display text-xl text-nexus-accent uppercase tracking-wider">{game.title}</h2>
-            <p className="text-xs text-nexus-muted">{game.category}</p>
+            <h2 className="font-display text-xl text-arc-accent uppercase tracking-wider">{game.title}</h2>
+            <p className="text-xs text-arc-dim">{game.category}</p>
           </div>
         </div>
         
         <div className="flex items-center gap-4">
           <button
             onClick={toggleFullscreen}
-            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors border border-white/10 text-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors border border-white/10 text-sm text-white"
           >
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
