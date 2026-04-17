@@ -1,6 +1,14 @@
 {
   "games": [
     {
+      "id": "drive-mad",
+      "title": "Drive Mad",
+      "description": "Drive Mad is a car game where you drive on a track filled with obstacles. Your goal is to reach the finish line in one piece.",
+      "category": "Racing",
+      "thumbnail": "https://cdn.jsdelivr.net/gh/genizy/dmad-poki@49b5ab6b987f5f3be58f9dae59c92e8fc1aab9b0/webapp/cover.jpg",
+      "url": "./drive-mad.html"
+    },
+    {
       "id": "2048",
       "title": "2048",
       "description": "Join the numbers and get to the 2048 tile!",

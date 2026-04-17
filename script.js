@@ -1,11 +1,18 @@
 /**
- * Arcade X - Vanilla JS Logic
+ * Arcade X - Vanilla JS Logic with Data Saving
  */
 
+let baseGames = [];
 let allGames = [];
 let categories = ['All'];
 let selectedCategory = 'All';
 let searchQuery = '';
+
+// Persistent Data Structure
+let localData = {
+  favorites: [],
+  recent: [],
+};
 
 // DOM Elements
 const gameGrid = document.getElementById('game-grid');
@@ -24,23 +31,53 @@ const toggleFsBtn = document.getElementById('toggle-fs');
 
 // Initialize
 async function init() {
+  loadLocalData();
   try {
     const response = await fetch('./src/data/games.json');
     const data = await response.json();
-    allGames = data.games;
-    
-    // Extract categories
-    const cats = new Set(allGames.map(g => g.category));
-    categories = ['All', ...Array.from(cats)];
+    baseGames = data.games;
+    refreshAllGames();
+    updateCategories();
     
     renderCategories();
     renderGames();
     setupFeaturedGame();
     lucide.createIcons();
     setupEventListeners();
+    initOnlineCounter();
   } catch (error) {
     console.error('Error loading games:', error);
+    refreshAllGames();
+    updateCategories();
+    renderCategories();
+    renderGames();
+    lucide.createIcons();
+    setupEventListeners();
   }
+}
+
+function loadLocalData() {
+  const saved = localStorage.getItem('arcade-x-data');
+  if (saved) {
+    try {
+      localData = { ...localData, ...JSON.parse(saved) };
+    } catch (e) {
+      console.error('Error parsing local storage:', e);
+    }
+  }
+}
+
+function saveLocalData() {
+  localStorage.setItem('arcade-x-data', JSON.stringify(localData));
+}
+
+function refreshAllGames() {
+  allGames = [...baseGames];
+}
+
+function updateCategories() {
+  const cats = new Set(allGames.map(g => g.category));
+  categories = ['All', ...Array.from(cats)];
 }
 
 function setupEventListeners() {
@@ -54,28 +91,24 @@ function setupEventListeners() {
   toggleFsBtn.addEventListener('click', () => {
     if (!document.fullscreenElement) {
       gameIframe.requestFullscreen().catch(err => {
-        alert(`Error escaping to full-screen mode: ${err.message} (${err.name})`);
+        alert(`Fullscreen error: ${err.message}`);
       });
     } else {
       document.exitFullscreen();
     }
   });
 
-  // Category clicks
-  document.querySelectorAll('.nav-item').forEach(item => {
+  document.querySelectorAll('.nav-item[data-category]').forEach(item => {
     item.addEventListener('click', () => {
-      const cat = item.getAttribute('data-category');
-      if (cat) {
-        selectedCategory = cat;
-        updateActiveCategory();
-        renderGames();
-      }
+      selectedCategory = item.getAttribute('data-category');
+      updateActiveCategory();
+      renderGames();
     });
   });
 }
 
 function updateActiveCategory() {
-  document.querySelectorAll('.nav-item').forEach(item => {
+  document.querySelectorAll('.nav-item[data-category]').forEach(item => {
     if (item.getAttribute('data-category') === selectedCategory) {
       item.classList.add('active');
     } else {
@@ -115,20 +148,35 @@ function setupFeaturedGame() {
 }
 
 function renderGames() {
-  const filtered = allGames.filter(game => {
-    const matchesSearch = game.title.toLowerCase().includes(searchQuery) || 
-                        game.description.toLowerCase().includes(searchQuery);
-    const matchesCategory = selectedCategory === 'All' || game.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  let displayGames = allGames;
+
+  if (selectedCategory === 'Favorites') {
+    displayGames = allGames.filter(g => localData.favorites.includes(g.id));
+  } else if (selectedCategory === 'Recent') {
+    displayGames = (localData.recent || [])
+      .map(id => allGames.find(g => g.id === id))
+      .filter(g => g !== undefined);
+  } else {
+    displayGames = allGames.filter(game => {
+      const matchesSearch = game.title.toLowerCase().includes(searchQuery) || 
+                          game.description.toLowerCase().includes(searchQuery);
+      const matchesCategory = selectedCategory === 'All' || game.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }
 
   gameGrid.innerHTML = '';
-  matchCountEl.textContent = `${filtered.length} matches`;
+  matchCountEl.textContent = `${displayGames.length} matches`;
 
-  filtered.forEach(game => {
+  displayGames.forEach(game => {
+    const isFav = localData.favorites.includes(game.id);
     const card = document.createElement('div');
     card.className = 'game-card';
+    card.style.position = 'relative';
     card.innerHTML = `
+      <button class="favorite-btn ${isFav ? 'active' : ''}" data-id="${game.id}">
+        <i data-lucide="heart" class="${isFav ? 'fill-current' : ''}"></i>
+      </button>
       <div class="game-thumb">
         <img src="${game.thumbnail}" alt="${game.title}" referrerpolicy="no-referrer">
         <div class="play-tip">
@@ -149,11 +197,28 @@ function renderGames() {
       </div>
     `;
     
-    card.addEventListener('click', () => openPlayer(game));
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.favorite-btn')) {
+        toggleFavorite(game.id);
+        return;
+      }
+      openPlayer(game);
+    });
     gameGrid.appendChild(card);
   });
   
   lucide.createIcons();
+}
+
+function toggleFavorite(id) {
+  const index = localData.favorites.indexOf(id);
+  if (index === -1) {
+    localData.favorites.push(id);
+  } else {
+    localData.favorites.splice(index, 1);
+  }
+  saveLocalData();
+  renderGames();
 }
 
 function openPlayer(game) {
@@ -162,6 +227,12 @@ function openPlayer(game) {
   gameIframe.src = game.url;
   playerOverlay.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+
+  // Track Recent
+  if (!localData.recent) localData.recent = [];
+  localData.recent = [game.id, ...localData.recent.filter(id => id !== game.id)].slice(0, 10);
+  saveLocalData();
+
   lucide.createIcons();
 }
 
@@ -171,5 +242,44 @@ function closePlayer() {
   document.body.style.overflow = '';
 }
 
-// Start
+/**
+ * Dynamic Online Counter
+ * Fluctuates numbers to give a live atmospheric feel
+ */
+function initOnlineCounter() {
+  const headerCountEl = document.getElementById('header-online-count');
+  const trendingCountEl = document.getElementById('trending-online-count');
+  
+  if (!headerCountEl || !trendingCountEl) return;
+
+  let headerCount = 842;
+  let trendingCount = 4210;
+
+  function updateDisplay() {
+    headerCountEl.textContent = `${headerCount.toLocaleString()} Online`;
+    trendingCountEl.textContent = trendingCount.toLocaleString();
+  }
+
+  function fluctuate() {
+    // Random fluctuation between -3 and +3
+    headerCount += Math.floor(Math.random() * 7) - 3;
+    trendingCount += Math.floor(Math.random() * 11) - 5;
+    
+    // Bounds to keep it realistic
+    if (headerCount < 750) headerCount += 5;
+    if (headerCount > 1100) headerCount -= 5;
+    if (trendingCount < 3800) trendingCount += 10;
+    if (trendingCount > 5500) trendingCount -= 10;
+    
+    updateDisplay();
+    
+    // Schedule next fluctuation with a random delay (2-5s)
+    setTimeout(fluctuate, Math.random() * 3000 + 2000);
+  }
+
+  // Initial update
+  updateDisplay();
+  fluctuate();
+}
+
 init();

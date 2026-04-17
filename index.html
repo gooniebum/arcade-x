@@ -30,7 +30,7 @@
 
       <div class="header-actions">
         <div class="status-badge">
-          <span class="online-count">842 Online</span>
+          <span class="online-count" id="header-online-count">842 Online</span>
           <div class="avatar">
             <div class="avatar-ping"></div>
           </div>
@@ -49,9 +49,13 @@
             <i data-lucide="trending-up"></i>
             <span>All Games</span>
           </div>
-          <div class="nav-item">
-            <i data-lucide="sparkles"></i>
-            <span>Popular Now</span>
+          <div class="nav-item" data-category="Favorites">
+            <i data-lucide="heart" class="text-hot"></i>
+            <span>Favorites</span>
+          </div>
+          <div class="nav-item" data-category="Recent">
+            <i data-lucide="history"></i>
+            <span>Recently Played</span>
           </div>
         </div>
       </div>
@@ -108,7 +112,7 @@
             <p>Stay ahead with our most played unblocked titles. Updated daily.</p>
             <div class="live-stats text-accent">
               <span class="ping-dot"></span>
-              Live Players: 4,210
+              Live Players: <span id="trending-online-count">4,210</span>
             </div>
           </div>
           <div class="info-card">
@@ -164,6 +168,6 @@
   </div>
 
   <!-- Script -->
-  <script src="./script.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
