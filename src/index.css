@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-arc-bg: #050508;
+  --color-arc-surface: rgba(255, 255, 255, 0.05);
+  --color-arc-accent: #00f2ff;
+  --color-arc-hot: #ff007a;
+  --color-arc-text: #ffffff;
+  --color-arc-dim: #8a8a9e;
+  --color-arc-glass: rgba(255, 255, 255, 0.1);
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-arc-bg text-arc-text font-sans antialiased overflow-x-hidden;
+  }
+}
+
+.atmosphere {
+  @apply fixed inset-0 -z-10 bg-fixed;
+  background: radial-gradient(circle at 80% 20%, rgba(0, 242, 255, 0.08) 0%, transparent 40%),
+              radial-gradient(circle at 20% 80%, rgba(255, 0, 122, 0.08) 0%, transparent 40%);
+}
+
+.glass-panel {
+  @apply bg-arc-surface border border-arc-glass backdrop-blur-xl;
+}
+
+.nav-item-active {
+  @apply bg-arc-surface text-arc-accent border-l-4 border-arc-accent;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
