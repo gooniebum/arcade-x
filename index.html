@@ -33,6 +33,10 @@
       </div>
 
       <div class="header-actions">
+        <button id="panic-btn" class="panic-btn" title="Panic (Press 'Esc')">
+          <i data-lucide="shield-alert"></i>
+          <span>Panic</span>
+        </button>
         <div class="status-badge">
           <span class="online-count" id="header-online-count">842 Online</span>
           <div class="avatar">
@@ -65,6 +69,22 @@
             <i data-lucide="megaphone"></i>
             <span>Updates</span>
           </div>
+          <div class="nav-item" data-category="AI">
+            <i data-lucide="sparkles"></i>
+            <span>AI Assistant</span>
+          </div>
+          <div class="nav-item" data-category="Search">
+            <i data-lucide="search"></i>
+            <span>Unblocked Search</span>
+          </div>
+          <div class="nav-item" data-category="Settings">
+            <i data-lucide="settings"></i>
+            <span>Settings</span>
+          </div>
+          <div class="nav-item" data-category="Credits">
+            <i data-lucide="award"></i>
+            <span>Credits</span>
+          </div>
         </div>
       </div>
 
@@ -77,7 +97,7 @@
 
       <div class="sidebar-footer">
         <div class="version-card">
-          <p>Community Discord</p>
+          <a href="https://discord.gg/Ywt9Fyse" target="_blank" class="discord-link">Community Discord</a>
           <span class="version-text">Arcade X Core v2.4.0</span>
         </div>
       </div>
@@ -126,6 +146,150 @@
           </div>
         </section>
 
+        <!-- AI Section -->
+        <section id="ai-section" class="hidden">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i data-lucide="sparkles"></i>
+              <span>Arcade X AI</span>
+            </h2>
+          </div>
+          
+          <div class="ai-container">
+            <div class="ai-chat-box" id="ai-chat-box">
+              <div class="ai-message system">
+                <div class="ai-msg-content">Hello! I am your Arcade X Assistant. Ask me anything about the games here, or just chat!</div>
+              </div>
+            </div>
+            <div class="ai-input-group">
+              <input type="text" id="ai-input" placeholder="Type a message...">
+              <button id="ai-send-btn">
+                <i data-lucide="send"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Search Section -->
+        <section id="search-section" class="hidden">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i data-lucide="search"></i>
+              <span>Web Search</span>
+            </h2>
+            <div class="search-disclaimer">Privacy-focused unblocked search proxy</div>
+          </div>
+          
+          <div class="search-engine-wrapper">
+            <div class="search-bar-inline">
+              <input type="text" id="web-search-input" placeholder="Search the web (Google Proxy)...">
+              <button id="web-search-btn">
+                <i data-lucide="search"></i>
+              </button>
+            </div>
+            <div class="search-iframe-container">
+              <iframe id="search-iframe" src="about:blank" title="Unblocked Search engine"></iframe>
+              <div id="search-placeholder" class="search-placeholder">
+                <i data-lucide="globe"></i>
+                <p>Enter a query above to search the web anonymously.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings-section" class="hidden">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i data-lucide="settings"></i>
+              <span>Preferences</span>
+            </h2>
+          </div>
+          
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3>General Configuration</h3>
+              <p>Adjust your portal experience.</p>
+              
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">Automatic Fullscreen</span>
+                  <span class="setting-desc">Open games in fullscreen mode by default.</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="setting-auto-fs">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">Atmosphere Effects</span>
+                  <span class="setting-desc">Enable background glows and animations.</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="setting-atmosphere" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-card">
+              <h3>Theme & UI</h3>
+              <p>Personalize the visual interface.</p>
+              
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">Accent Color</span>
+                  <span class="setting-desc">Choose the primary glow color.</span>
+                </div>
+                <select id="setting-accent" class="setting-select">
+                  <option value="#00f2ff">Neon Cyan</option>
+                  <option value="#ff007a">Hot Pink</option>
+                  <option value="#7000ff">Digital Purple</option>
+                  <option value="#00ff66">Slime Green</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="settings-card">
+              <h3>Panic Button</h3>
+              <p>Instantly switch to a "safe" website.</p>
+              
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">Panic URL</span>
+                  <span class="setting-desc">The website you want to escape to.</span>
+                </div>
+                <input type="text" id="setting-panic-url" class="setting-input" placeholder="https://google.com">
+              </div>
+            </div>
+
+            <div class="settings-card danger">
+              <h3>System</h3>
+              <p>Dangerous operations.</p>
+              <button class="btn-outline-danger" id="clear-data-btn">Clear All Local Data</button>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Credits Section -->
+        <section id="credits-section" class="hidden">
+          <div class="section-header">
+            <h2 class="section-title">
+              <i data-lucide="award"></i>
+              <span>Arcade X Credits</span>
+            </h2>
+          </div>
+          
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3>Development & Design</h3>
+              <p>Everything made by <span class="text-accent font-bold">Cheezy</span></p>
+            </div>
+          </div>
+        </section>
+
         <!-- Footer Info -->
         <section class="info-grid">
           <div class="info-card">
@@ -141,7 +305,7 @@
             <i data-lucide="info" class="card-bg-icon"></i>
             <h3>About Arcade X</h3>
             <p>Premium unblocked gaming for school or work. No tracking, high performance.</p>
-            <div class="card-link text-secondary">Learn More <i data-lucide="github"></i></div>
+            <a href="./bum.html" class="card-link text-secondary" style="text-decoration: none;">Learn More <i data-lucide="github"></i></a>
           </div>
         </section>
 
@@ -155,9 +319,8 @@
             <p>Hand-picked unblocked games. Play anywhere. All games are properties of their respective owners.</p>
           </div>
           <div class="footer-links">
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Submit Game</a>
+            <a href="./terms.html">Terms</a>
+            <a href="https://discord.gg/Ywt9Fyse" target="_blank">Submit Game</a>
           </div>
           <div class="footer-right">
             &copy; 2026 Arcade X<br>

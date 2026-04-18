@@ -1,6 +1,22 @@
 {
   "games": [
     {
+      "id": "drift-boss",
+      "title": "Drift Boss",
+      "description": "Drift Boss is an online drift car game where you drive on a winding track. Your goal is to stay on the track as long as possible.",
+      "category": "Racing",
+      "thumbnail": "https://brainplay.com/imgs/games/drift-boss-game.webp",
+      "url": "./drift-boss.html"
+    },
+    {
+      "id": "pokemon-emerald",
+      "title": "Pokémon Emerald",
+      "description": "The definitive Gen 3 experience. Journey through the Hoenn region, battle Team Magma and Team Aqua, and become the Champion.",
+      "category": "Adventure",
+      "thumbnail": "https://images.launchbox-app.com/cfc2454e-b2f0-484b-b537-ecf0b25affab.jpg",
+      "url": "./pokemon-emerald.html"
+    },
+    {
       "id": "minecraft",
       "title": "Minecraft",
       "description": "Explore infinite worlds and build everything from the simplest of homes to the grandest of castles.",
@@ -39,6 +55,22 @@
       "category": "Action",
       "thumbnail": "https://slope-play.com/cache/data/image/game/slope-logo-1-f309x309.webp",
       "url": "./slope.html"
+    },
+    {
+      "id": "escape-road",
+      "title": "Escape Road",
+      "description": "The original high-speed police chase game. Outrun the law and navigate through the city in this thrilling racer.",
+      "category": "Racing",
+      "thumbnail": "https://tse2.mm.bing.net/th/id/OIP.KO4p2TbgFx51cucCwdccvwHaHa?pid=Api&h=220&P=0",
+      "url": "./escape-road.html"
+    },
+    {
+      "id": "escape-road-2",
+      "title": "Escape Road 2",
+      "description": "The high-octane sequel. Outrun the law, dodge obstacles, and survive the escape in this intense driving challenge.",
+      "category": "Racing",
+      "thumbnail": "https://tse1.mm.bing.net/th/id/OIP.vU02x-VF4zSaKshquiuUDAAAAA?pid=Api&h=220&P=0",
+      "url": "./escape-road-2.html"
     }
   ]
 }

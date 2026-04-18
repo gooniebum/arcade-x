@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Emerald - Arcade X</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #game {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://file.classicjoy.games/emulator-4-2-3/data/emulator.min.css">
+</head>
+<body>
+    <div id="game"></div>
+
+    <script>
+        window.EJS_player = '#game';
+        window.EJS_gameUrl = 'https://file.classicjoy.games/games/pokemon-emerald/Pokemon - Emerald Version (U).gba';
+        window.EJS_core = 'gba';
+        window.EJS_pathtodata = 'https://file.classicjoy.games/emulator-4-2-3/data/';
+        window.EJS_startOnLoaded = true;
+        window.EJS_gameName = 'Pokémon Emerald Version';
+    </script>
+    <script src="https://file.classicjoy.games/emulator-4-2-3/data/emulator.min.js"></script>
+</body>
+</html>
