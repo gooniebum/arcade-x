@@ -8,8 +8,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-deep: #050508;
+            --accent-glow: #00f2ff;
+        }
         body {
-            background-color: #050508;
+            background-color: var(--bg-deep);
             color: white;
             font-family: 'Inter', sans-serif;
             display: flex;
@@ -19,6 +23,47 @@
             margin: 0;
             overflow: hidden;
             text-align: center;
+        }
+        .atmosphere {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(0, 242, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(255, 0, 122, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.1) 0%, transparent 70%),
+                #020205;
+            z-index: -1;
+        }
+        .atmosphere::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 10% 10%, #fff, transparent),
+                radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+                radial-gradient(2px 2px at 40% 70%, #fff, transparent),
+                radial-gradient(1px 1px at 50% 15%, #fff, transparent),
+                radial-gradient(1px 1px at 80% 40%, #fff, transparent),
+                radial-gradient(2px 2px at 90% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 70% 60%, #fff, transparent),
+                radial-gradient(1px 1px at 30% 90%, #fff, transparent);
+            background-size: 300px 300px;
+            opacity: 0.3;
+            animation: starsTwinkle 4s ease-in-out infinite alternate;
+        }
+        .atmosphere::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 40% 40%, rgba(0, 242, 255, 0.03) 0%, transparent 30%),
+                radial-gradient(circle at 60% 60%, rgba(255, 0, 122, 0.03) 0%, transparent 30%);
+            filter: blur(40px);
+            pointer-events: none;
+        }
+        @keyframes starsTwinkle {
+            0% { opacity: 0.2; transform: scale(1); }
+            100% { opacity: 0.4; transform: scale(1.05); }
         }
         .container {
             max-width: 600px;
@@ -58,6 +103,7 @@
     </style>
 </head>
 <body>
+    <div class="atmosphere"></div>
     <div class="container">
         <h1>Arcade X</h1>
         <p>its just a game website you bum</p>
