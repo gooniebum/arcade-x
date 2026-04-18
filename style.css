@@ -349,6 +349,66 @@ header {
   gap: 24px;
 }
 
+.hidden {
+  display: none !important;
+}
+
+/* Updates Section */
+.updates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.update-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s;
+}
+
+.update-item:hover {
+  transform: translateX(4px);
+  border-color: var(--accent-glow);
+}
+
+.update-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.update-tag {
+  background: var(--accent-secondary);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.update-date {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.update-content h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: var(--accent-glow);
+}
+
+.update-content p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
 .game-card {
   background: var(--bg-surface);
   border-radius: 20px;

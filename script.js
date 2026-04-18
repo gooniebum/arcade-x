@@ -21,6 +21,9 @@ const featuredGameEl = document.getElementById('featured-game');
 const searchInput = document.getElementById('game-search');
 const matchCountEl = document.getElementById('match-count');
 const currentCategoryEl = document.getElementById('current-category');
+const gridSection = document.querySelector('.grid-section');
+const updatesSection = document.getElementById('updates-section');
+const updatesList = document.getElementById('updates-list');
 
 const playerOverlay = document.getElementById('player-overlay');
 const gameIframe = document.getElementById('game-iframe');
@@ -45,6 +48,13 @@ async function init() {
     lucide.createIcons();
     setupEventListeners();
     initOnlineCounter();
+    
+    // Link version card to updates
+    document.querySelector('.version-card p').addEventListener('click', () => {
+      selectedCategory = 'Updates';
+      updateActiveCategory();
+      renderGames();
+    });
   } catch (error) {
     console.error('Error loading games:', error);
     refreshAllGames();
@@ -115,7 +125,64 @@ function updateActiveCategory() {
       item.classList.remove('active');
     }
   });
-  currentCategoryEl.textContent = selectedCategory === 'All' ? 'Current Library' : selectedCategory;
+
+  if (selectedCategory === 'Updates') {
+    gridSection.classList.add('hidden');
+    document.getElementById('featured-section').classList.add('hidden');
+    updatesSection.classList.remove('hidden');
+    renderUpdates();
+  } else {
+    gridSection.classList.remove('hidden');
+    document.getElementById('featured-section').classList.remove('hidden');
+    updatesSection.classList.add('hidden');
+    currentCategoryEl.textContent = selectedCategory === 'All' ? 'Current Library' : selectedCategory;
+  }
+}
+
+function renderUpdates() {
+  const updates = [
+    {
+      title: 'New Gameplay: Minecraft added!',
+      date: 'April 18, 2026',
+      tag: 'New Game',
+      content: 'Experience the magic of Minecraft (EaglercraftX) directly in Arcade X. We\'ve optimized the loader for smoother performance on all devices.'
+    },
+    {
+      title: 'Competitive Mode: 1v1.lol Joins',
+      date: 'April 18, 2026',
+      tag: 'New Game',
+      content: 'The ultimate build-and-shoot battle royale is now unblocked. Practive your builds and dominates the arena.'
+    },
+    {
+      title: 'Branding Refresh & Performance',
+      date: 'April 17, 2026',
+      tag: 'System',
+      content: 'Updated our core engine (Arcade X v2.4.0) with faster game loading and a brand new glowing gamepad logo.'
+    },
+    {
+      title: 'The Classics: Geometry Dash',
+      date: 'April 17, 2026',
+      tag: 'New Game',
+      content: 'Rhythm action is back. We\'ve added Geometry Dash with full unblocked support for chromebooks.'
+    }
+  ];
+
+  updatesList.innerHTML = '';
+  updates.forEach(u => {
+    const item = document.createElement('div');
+    item.className = 'update-item';
+    item.innerHTML = `
+      <div class="update-header">
+        <span class="update-tag">${u.tag}</span>
+        <span class="update-date">${u.date}</span>
+      </div>
+      <div class="update-content">
+        <h3>${u.title}</h3>
+        <p>${u.content}</p>
+      </div>
+    `;
+    updatesList.appendChild(item);
+  });
 }
 
 function renderCategories() {
