@@ -73,6 +73,87 @@ body {
   100% { opacity: 0.4; transform: scale(1.05); }
 }
 
+/* Tech Decor Ornaments */
+.tech-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--accent-glow);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+.tc-tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; transform: translate(-4px, -4px); }
+.tc-tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; transform: translate(4px, -4px); }
+.tc-bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; transform: translate(-4px, 4px); }
+.tc-br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; transform: translate(4px, 4px); }
+
+.game-card:hover .tech-corner, 
+.featured-slot:hover .tech-corner,
+.settings-card:hover .tech-corner {
+  opacity: 0.8;
+  transform: translate(0, 0);
+  border-color: var(--accent-glow);
+}
+
+/* Decorative Background Elements */
+.tech-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at center, black, transparent 90%);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.scanner-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+  box-shadow: 0 0 15px var(--accent-glow);
+  opacity: 0.15;
+  animation: scanLine 8s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes scanLine {
+  0% { top: -5%; }
+  100% { top: 105%; }
+}
+
+.shooting-star {
+  position: absolute;
+  top: var(--y, 0);
+  left: var(--x, 0);
+  width: 150px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-glow), transparent);
+  filter: drop-shadow(0 0 8px var(--accent-glow));
+  animation: shootingStar var(--d, 5s) linear infinite;
+  transform: rotate(var(--r, 0deg));
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes shootingStar {
+  0% { transform: rotate(var(--r)) translateX(0); opacity: 0; }
+  5% { opacity: 1; }
+  100% { transform: rotate(var(--r)) translateX(800px); opacity: 0; }
+}
+
+.shooting-star:nth-child(1) { --x: 10%; --y: 20%; --r: 45deg; --d: 7s; }
+.shooting-star:nth-child(2) { --x: 40%; --y: -10%; --r: 35deg; --d: 12s; }
+.shooting-star:nth-child(3) { --x: 70%; --y: 10%; --r: 55deg; --d: 9s; }
+
 /* Header */
 header {
   height: var(--header-height);
@@ -127,6 +208,12 @@ header {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 24px;
+  animation: neonFlicker 5s linear infinite;
+}
+
+@keyframes neonFlicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; filter: drop-shadow(0 0 0px var(--accent-glow)); }
+  20%, 24%, 55% { opacity: 0.8; filter: drop-shadow(0 0 8px var(--accent-glow)); }
 }
 
 .search-container {
@@ -827,6 +914,7 @@ input:checked + .slider:before {
   box-shadow: 0 0 10px var(--accent-glow);
 }
 
+/* Game Card Enhancements */
 .game-card {
   background: var(--bg-surface);
   border-radius: 20px;
@@ -835,14 +923,33 @@ input:checked + .slider:before {
   aspect-ratio: 1/1.2;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  cursor: pointer;
-  transition: transform 0.3s, border-color 0.3s;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(0, 242, 255, 0.05), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
 }
 
 .game-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(0, 242, 255, 0.4);
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--accent-glow);
+  box-shadow: 0 15px 40px rgba(0, 242, 255, 0.15), 0 0 0 1px var(--accent-glow);
+}
+
+.game-card:hover::before {
+  transform: translateX(100%);
+}
+
+.game-card {
+  gap: 12px;
+  cursor: pointer;
 }
 
 .game-thumb {
@@ -1197,7 +1304,117 @@ input:checked + .slider:before {
   line-height: 1.8;
 }
 
-/* Player Overlay */
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-container {
+  background: #0a0a0f;
+  border: 1px solid var(--border-glass);
+  width: 100%;
+  max-width: 500px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hiddeng;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-glass);
+}
+
+.modal-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 242, 255, 0.1);
+  color: var(--accent-glow);
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+.close-modal-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.close-modal-btn:hover {
+  color: #fff;
+}
+
+.modal-body {
+  padding: 32px;
+}
+
+.modal-body h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.modal-date {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.modal-content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+.modal-footer {
+  padding: 24px;
+  border-top: 1px solid var(--border-glass);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-action-btn {
+  background: var(--accent-glow);
+  color: #050508;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.modal-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+}
 .player-overlay {
   position: fixed;
   inset: 0;

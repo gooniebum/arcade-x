@@ -7,6 +7,70 @@ let allGames = [];
 let categories = ['All'];
 let selectedCategory = 'All';
 let searchQuery = '';
+let gamePlays = {};
+
+const siteUpdates = [
+  {
+    title: 'Double Trouble: Escape Road 1 & 2 are Live!',
+    date: 'April 19, 2026',
+    tag: 'New Games',
+    content: 'We’ve added both the original Escape Road and its high-octane sequel. Choose your ride and start the chase!'
+  },
+  {
+    title: 'Emergency Override: Panic Button Added!',
+    date: 'April 18, 2026',
+    tag: 'New Feature',
+    content: 'Added a stealthy "Panic Button" to the header. Configure your safe URL in settings and press "Esc" for an instant escape to a new tab.'
+  },
+  {
+    title: 'Control Center Active: Settings Tab Launched!',
+    date: 'April 18, 2026',
+    tag: 'New Feature',
+    content: 'Personalize your Arcade X experience. You can now toggle atmosphere effects, change your accent color, and manage local data in the new Settings tab.'
+  },
+  {
+    title: 'Global Search Unleashed: Unblocked Web Search!',
+    date: 'April 18, 2026',
+    tag: 'New Feature',
+    content: 'We’ve integrated a privacy-focused, unblocked search engine directly into the dashboard. Search the web anonymously without leaving Arcade X.'
+  },
+  {
+    title: 'Drifting Legends: Drift Boss Added!',
+    date: 'April 18, 2026',
+    tag: 'New Game',
+    content: 'Master the art of the drift. Drift Boss is now unblocked and ready to play. Challenge yourself on the winding infinite track.'
+  },
+  {
+    title: 'Retro Revival: Pokémon Emerald!',
+    date: 'April 18, 2026',
+    tag: 'New Game',
+    content: 'Journey back to Hoenn. Pokémon Emerald is now playable in Arcade X with full save state support and GBA emulation.'
+  },
+  {
+    title: 'New Gameplay: Minecraft added!',
+    date: 'April 18, 2026',
+    tag: 'New Game',
+    content: 'Experience the magic of Minecraft (EaglercraftX) directly in Arcade X. We\'ve optimized the loader for smoother performance on all devices.'
+  },
+  {
+    title: 'Competitive Mode: 1v1.lol Joins',
+    date: 'April 18, 2026',
+    tag: 'New Game',
+    content: 'The ultimate build-and-shoot battle royale is now unblocked. Practive your builds and dominates the arena.'
+  },
+  {
+    title: 'Branding Refresh & Performance',
+    date: 'April 17, 2026',
+    tag: 'System',
+    content: 'Updated our core engine (Arcade X v2.4.0) with faster game loading and a brand new glowing gamepad logo.'
+  },
+  {
+    title: 'The Classics: Geometry Dash',
+    date: 'April 17, 2026',
+    tag: 'New Game',
+    content: 'Rhythm action is back. We\'ve added Geometry Dash with full unblocked support for chromebooks.'
+  }
+];
 
 // Persistent Data Structure
 let localData = {
@@ -62,6 +126,15 @@ async function init() {
     const response = await fetch('./src/data/games.json');
     const data = await response.json();
     baseGames = data.games;
+    
+    // Fetch real play counts
+    try {
+      const playsRes = await fetch('/api/games/plays');
+      gamePlays = await playsRes.json();
+    } catch (e) {
+      console.error('Error loading plays:', e);
+    }
+
     refreshAllGames();
     updateCategories();
     
@@ -71,6 +144,7 @@ async function init() {
     lucide.createIcons();
     setupEventListeners();
     initOnlineCounter();
+    checkLatestNews();
   } catch (error) {
     console.error('Error loading games:', error);
     refreshAllGames();
@@ -180,6 +254,7 @@ function updateActiveCategory() {
     searchSection.classList.add('hidden');
     settingsSection.classList.add('hidden');
     creditsSection.classList.remove('hidden');
+    updateCreditsStats();
   } else {
     gridSection.classList.remove('hidden');
     document.getElementById('featured-section').classList.remove('hidden');
@@ -341,71 +416,8 @@ function addChatMessage(role, text) {
 }
 
 function renderUpdates() {
-  const updates = [
-    {
-      title: 'Double Trouble: Escape Road 1 & 2 are Live!',
-      date: 'April 18, 2026',
-      tag: 'New Games',
-      content: 'We’ve added both the original Escape Road and its high-octane sequel. Choose your ride and start the chase!'
-    },
-    {
-      title: 'Emergency Override: Panic Button Added!',
-      date: 'April 18, 2026',
-      tag: 'New Feature',
-      content: 'Added a stealthy "Panic Button" to the header. Configure your safe URL in settings and press "Esc" for an instant escape to a new tab.'
-    },
-    {
-      title: 'Control Center Active: Settings Tab Launched!',
-      date: 'April 18, 2026',
-      tag: 'New Feature',
-      content: 'Personalize your Arcade X experience. You can now toggle atmosphere effects, change your accent color, and manage local data in the new Settings tab.'
-    },
-    {
-      title: 'Global Search Unleashed: Unblocked Web Search!',
-      date: 'April 18, 2026',
-      tag: 'New Feature',
-      content: 'We’ve integrated a privacy-focused, unblocked search engine directly into the dashboard. Search the web anonymously without leaving Arcade X.'
-    },
-    {
-      title: 'Drifting Legends: Drift Boss Added!',
-      date: 'April 18, 2026',
-      tag: 'New Game',
-      content: 'Master the art of the drift. Drift Boss is now unblocked and ready to play. Challenge yourself on the winding infinite track.'
-    },
-    {
-      title: 'Retro Revival: Pokémon Emerald!',
-      date: 'April 18, 2026',
-      tag: 'New Game',
-      content: 'Journey back to Hoenn. Pokémon Emerald is now playable in Arcade X with full save state support and GBA emulation.'
-    },
-    {
-      title: 'New Gameplay: Minecraft added!',
-      date: 'April 18, 2026',
-      tag: 'New Game',
-      content: 'Experience the magic of Minecraft (EaglercraftX) directly in Arcade X. We\'ve optimized the loader for smoother performance on all devices.'
-    },
-    {
-      title: 'Competitive Mode: 1v1.lol Joins',
-      date: 'April 18, 2026',
-      tag: 'New Game',
-      content: 'The ultimate build-and-shoot battle royale is now unblocked. Practive your builds and dominates the arena.'
-    },
-    {
-      title: 'Branding Refresh & Performance',
-      date: 'April 17, 2026',
-      tag: 'System',
-      content: 'Updated our core engine (Arcade X v2.4.0) with faster game loading and a brand new glowing gamepad logo.'
-    },
-    {
-      title: 'The Classics: Geometry Dash',
-      date: 'April 17, 2026',
-      tag: 'New Game',
-      content: 'Rhythm action is back. We\'ve added Geometry Dash with full unblocked support for chromebooks.'
-    }
-  ];
-
   updatesList.innerHTML = '';
-  updates.forEach(u => {
+  siteUpdates.forEach(u => {
     const item = document.createElement('div');
     item.className = 'update-item';
     item.innerHTML = `
@@ -420,6 +432,36 @@ function renderUpdates() {
     `;
     updatesList.appendChild(item);
   });
+}
+
+function checkLatestNews() {
+  const newsModal = document.getElementById('news-modal');
+  const closeBtn = document.getElementById('close-news');
+  const actionBtn = document.getElementById('news-modal-btn');
+  const newsModalTitle = document.getElementById('news-modal-title');
+  const newsModalDate = document.getElementById('news-modal-date');
+  const newsModalContent = document.getElementById('news-modal-content');
+
+  const latestNews = siteUpdates[0];
+  const lastSeenNews = localStorage.getItem('arcade-x-last-news');
+
+  if (lastSeenNews !== latestNews.title) {
+    // Populate modal
+    newsModalTitle.textContent = latestNews.title;
+    newsModalDate.textContent = latestNews.date;
+    newsModalContent.textContent = latestNews.content;
+
+    // Show modal
+    newsModal.classList.remove('hidden');
+
+    const closeHandler = () => {
+      newsModal.classList.add('hidden');
+      localStorage.setItem('arcade-x-last-news', latestNews.title);
+    };
+
+    closeBtn.onclick = closeHandler;
+    actionBtn.onclick = closeHandler;
+  }
 }
 
 function renderCategories() {
@@ -481,6 +523,10 @@ function renderGames() {
     card.className = 'game-card';
     card.style.position = 'relative';
     card.innerHTML = `
+      <div class="tech-corner tc-tl"></div>
+      <div class="tech-corner tc-tr"></div>
+      <div class="tech-corner tc-bl"></div>
+      <div class="tech-corner tc-br"></div>
       <button class="favorite-btn ${isFav ? 'active' : ''}" data-id="${game.id}">
         <i data-lucide="heart" class="${isFav ? 'fill-current' : ''}"></i>
       </button>
@@ -498,7 +544,7 @@ function renderGames() {
           <span class="game-category">${game.category}</span>
           <div class="game-plays">
             <span class="dot"></span>
-            ${Math.floor(Math.random() * 500) + 100} Plays
+            ${(gamePlays[game.id] || 0).toLocaleString()} Plays
           </div>
         </div>
       </div>
@@ -535,6 +581,19 @@ function openPlayer(game) {
   playerOverlay.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 
+  // Record Play on Server
+  fetch('/api/games/record-play', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ gameId: game.id })
+  }).then(res => res.json()).then(data => {
+    if (data.success) {
+      gamePlays[game.id] = data.count;
+      // Optionally re-render to show updated count immediately if card is visible background
+      // but usually users are in the player now.
+    }
+  }).catch(e => console.error('Error recording play:', e));
+
   // Track Recent
   if (!localData.recent) localData.recent = [];
   localData.recent = [game.id, ...localData.recent.filter(id => id !== game.id)].slice(0, 10);
@@ -557,36 +616,96 @@ function initOnlineCounter() {
   const headerCountEl = document.getElementById('header-online-count');
   const trendingCountEl = document.getElementById('trending-online-count');
   
-  if (!headerCountEl || !trendingCountEl) return;
-
-  let headerCount = 842;
-  let trendingCount = 4210;
-
-  function updateDisplay() {
-    headerCountEl.textContent = `${headerCount.toLocaleString()} Online`;
-    trendingCountEl.textContent = trendingCount.toLocaleString();
+  let sessionId = sessionStorage.getItem('arcade_session_id');
+  if (!sessionId) {
+    sessionId = 'sess_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+    sessionStorage.setItem('arcade_session_id', sessionId);
   }
 
-  function fluctuate() {
-    // Random fluctuation between -3 and +3
-    headerCount += Math.floor(Math.random() * 7) - 3;
-    trendingCount += Math.floor(Math.random() * 11) - 5;
-    
-    // Bounds to keep it realistic
-    if (headerCount < 750) headerCount += 5;
-    if (headerCount > 1100) headerCount -= 5;
-    if (trendingCount < 3800) trendingCount += 10;
-    if (trendingCount > 5500) trendingCount -= 10;
-    
-    updateDisplay();
-    
-    // Schedule next fluctuation with a random delay (2-5s)
-    setTimeout(fluctuate, Math.random() * 3000 + 2000);
+  async function sendHeartbeat() {
+    try {
+      await fetch('/api/heartbeat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId })
+      });
+    } catch (e) {
+      // Fail silently
+    }
   }
 
-  // Initial update
-  updateDisplay();
-  fluctuate();
+  async function updateOnlineCount() {
+    try {
+      const res = await fetch('/api/online-count');
+      const data = await res.json();
+      
+      const count = data.count || 0;
+      
+      if (headerCountEl) {
+        headerCountEl.textContent = `${count.toLocaleString()} Online`;
+      }
+      
+      if (trendingCountEl) {
+        // For trending, we show a slightly higher number to simulate historic global traffic
+        const simulatedTrending = Math.max(0, count * 5 + (Math.floor(Math.random() * 20)));
+        trendingCountEl.textContent = simulatedTrending.toLocaleString();
+      }
+    } catch (e) {
+      // Fail silently
+    }
+  }
+
+  // Initial calls
+  sendHeartbeat();
+  updateOnlineCount();
+
+  // Intervals
+  setInterval(sendHeartbeat, 25000);
+  setInterval(updateOnlineCount, 10000);
+}
+
+let timerInterval = null;
+const targetUpdateTime = new Date('2026-04-22T22:39:40Z').getTime();
+
+async function updateCreditsStats() {
+  const visitsEl = document.getElementById('total-visits-count');
+  const timerEl = document.getElementById('update-timer');
+  if (!visitsEl) return;
+  
+  try {
+    const res = await fetch('/api/stats');
+    const data = await res.json();
+    if (data.totalVisits !== undefined) {
+      visitsEl.textContent = data.totalVisits.toLocaleString();
+    }
+  } catch (e) {
+    visitsEl.textContent = 'Offline';
+  }
+
+  // Start countdown if not running
+  if (!timerInterval && timerEl) {
+    const updateTimerDisplay = () => {
+      const now = Date.now();
+      const diff = targetUpdateTime - now;
+      
+      if (diff <= 0) {
+        timerEl.textContent = "TRANSMISSION READY";
+        timerEl.classList.remove('text-arc-dim');
+        timerEl.classList.add('text-accent');
+        return;
+      }
+      
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      timerEl.textContent = `${d}d ${h}h ${m}m ${s}s`;
+    };
+    
+    updateTimerDisplay();
+    timerInterval = setInterval(updateTimerDisplay, 1000);
+  }
 }
 
 init();

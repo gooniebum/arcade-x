@@ -15,7 +15,13 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-  <div class="atmosphere"></div>
+  <div class="atmosphere">
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="tech-grid"></div>
+    <div class="scanner-line"></div>
+  </div>
 
   <!-- Header -->
   <header>
@@ -96,7 +102,11 @@
       </div>
 
       <div class="sidebar-footer">
-        <div class="version-card">
+        <div class="version-card relative">
+          <div class="tech-corner tc-tl"></div>
+          <div class="tech-corner tc-tr"></div>
+          <div class="tech-corner tc-bl"></div>
+          <div class="tech-corner tc-br"></div>
           <a href="https://discord.gg/Ywt9Fyse" target="_blank" class="discord-link">Community Discord</a>
           <span class="version-text">Arcade X Core v2.4.0</span>
         </div>
@@ -109,6 +119,10 @@
         <!-- Featured Slot -->
         <section id="featured-section">
           <div class="featured-slot" id="featured-game">
+            <div class="tech-corner tc-tl"></div>
+            <div class="tech-corner tc-tr"></div>
+            <div class="tech-corner tc-bl"></div>
+            <div class="tech-corner tc-br"></div>
             <div class="featured-overlay">
               <span class="tag">Featured Game</span>
               <h2 id="featured-title">Loading...</h2>
@@ -207,7 +221,11 @@
           </div>
           
           <div class="settings-grid">
-            <div class="settings-card">
+            <div class="settings-card relative">
+              <div class="tech-corner tc-tl"></div>
+              <div class="tech-corner tc-tr"></div>
+              <div class="tech-corner tc-bl"></div>
+              <div class="tech-corner tc-br"></div>
               <h3>General Configuration</h3>
               <p>Adjust your portal experience.</p>
               
@@ -234,7 +252,11 @@
               </div>
             </div>
 
-            <div class="settings-card">
+            <div class="settings-card relative">
+              <div class="tech-corner tc-tl"></div>
+              <div class="tech-corner tc-tr"></div>
+              <div class="tech-corner tc-bl"></div>
+              <div class="tech-corner tc-br"></div>
               <h3>Theme & UI</h3>
               <p>Personalize the visual interface.</p>
               
@@ -252,7 +274,11 @@
               </div>
             </div>
 
-            <div class="settings-card">
+            <div class="settings-card relative">
+              <div class="tech-corner tc-tl"></div>
+              <div class="tech-corner tc-tr"></div>
+              <div class="tech-corner tc-bl"></div>
+              <div class="tech-corner tc-br"></div>
               <h3>Panic Button</h3>
               <p>Instantly switch to a "safe" website.</p>
               
@@ -265,7 +291,11 @@
               </div>
             </div>
 
-            <div class="settings-card danger">
+            <div class="settings-card danger relative">
+              <div class="tech-corner tc-tl" style="border-color: var(--accent-hot)"></div>
+              <div class="tech-corner tc-tr" style="border-color: var(--accent-hot)"></div>
+              <div class="tech-corner tc-bl" style="border-color: var(--accent-hot)"></div>
+              <div class="tech-corner tc-br" style="border-color: var(--accent-hot)"></div>
               <h3>System</h3>
               <p>Dangerous operations.</p>
               <button class="btn-outline-danger" id="clear-data-btn">Clear All Local Data</button>
@@ -284,10 +314,32 @@
           
           <div class="settings-grid">
             <div class="settings-card relative min-h-[120px]">
+              <div class="tech-corner tc-tl"></div>
+              <div class="tech-corner tc-tr"></div>
+              <div class="tech-corner tc-bl"></div>
+              <div class="tech-corner tc-br"></div>
               <h3>Development & Design</h3>
               <p>Everything made by <span class="text-accent font-bold">Cheezy</span></p>
               <div class="absolute bottom-1 right-2 text-[10px] text-arc-dim opacity-30 italic leading-none origin-bottom-right scale-[0.6]">
                 credits to cocacola for being my friend👍
+              </div>
+            </div>
+
+            <div class="settings-card relative">
+              <div class="tech-corner tc-tl"></div>
+              <div class="tech-corner tc-tr"></div>
+              <div class="tech-corner tc-bl"></div>
+              <div class="tech-corner tc-br"></div>
+              <h3>Portal Statistics</h3>
+              <div class="stats-counter-group mt-2">
+                <div class="stat-item flex justify-between items-center py-1 border-b border-white/5">
+                  <span class="text-xs text-arc-dim">Total Visits:</span>
+                  <span id="total-visits-count" class="text-sm font-bold text-accent">Loading...</span>
+                </div>
+                <div class="stat-item flex justify-between items-center py-1">
+                  <span class="text-xs text-arc-dim">Time till next update:</span>
+                  <span id="update-timer" class="text-[10px] uppercase font-bold text-arc-dim">--:--:--:--</span>
+                </div>
               </div>
             </div>
           </div>
@@ -332,6 +384,41 @@
         </footer>
       </div>
     </main>
+  </div>
+
+  <!-- News Update Modal -->
+  <div id="news-modal" class="modal-overlay hidden">
+    <div class="modal-container">
+      <div class="tech-corner tc-tl"></div>
+      <div class="tech-corner tc-tr"></div>
+      <div class="tech-corner tc-bl"></div>
+      <div class="tech-corner tc-br"></div>
+      
+      <div class="modal-header">
+        <div class="modal-badge">
+          <i data-lucide="megaphone"></i>
+          <span>LATEST NEWS</span>
+        </div>
+        <button id="close-news" class="close-modal-btn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <h2 id="news-modal-title">Welcome to Arcade X</h2>
+        <div class="modal-date" id="news-modal-date">April 19, 2026</div>
+        <div class="modal-content" id="news-modal-content">
+          Loading the latest transmission...
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button id="news-modal-btn" class="modal-action-btn">
+          <span>Acknowledge</span>
+          <i data-lucide="chevron-right"></i>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Game Player Overlay -->
